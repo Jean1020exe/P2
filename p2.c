@@ -88,6 +88,7 @@ typedef struct {
     char         data_hora[30];
 } Pedido;
 
+
 typedef struct {
     int index;
     int qtd;
@@ -129,6 +130,30 @@ void obter_data_hora(char *buf, int tam) {
 void linha(char c, int n) {
     for (int i = 0; i < n; i++) putchar(c);
     putchar('\n');
+}
+
+void SalvarDados (void){
+    FILE *f = fopen("dados_da_loja.dat", "wb");
+    if (f) {
+        fwrite(&num_clientes, sizeof(int), 1, f);
+        fwrite(clientes, sizeof(clientes), num_clientes, f);
+        fwrite(&num_produtos, sizeof(int), 1, f);
+        fwrite(produtos, sizeof(produtos), num_produtos, f);
+        fwrite(&num_pedidos, sizeof(int), 1, f);
+        fwrite(pedidos, sizeof(pedidos), num_pedidos, f);
+    }
+}
+
+void CarregarDados (void){
+    FILE *f = fopen("dados_da_loja.dat", "wb");
+    if (f) {
+        fwrite(&num_clientes, sizeof(int), 1, f);
+        fwrite(clientes, sizeof(clientes), num_clientes, f);
+        fwrite(&num_produtos, sizeof(int), 1, f);
+        fwrite(produtos, sizeof(produtos), num_produtos, f);
+        fwrite(&num_pedidos, sizeof(int), 1, f);
+        fwrite(pedidos, sizeof(pedidos), num_pedidos, f);
+    }
 }
 
 const char *forma_pagamento_str(FormaPagamento f) {
