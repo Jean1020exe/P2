@@ -132,30 +132,6 @@ void linha(char c, int n) {
     putchar('\n');
 }
 
-void SalvarDados (void){
-    FILE *f = fopen("dados_da_loja.dat", "wb");
-    if (f) {
-        fwrite(&num_clientes, sizeof(int), 1, f);
-        fwrite(clientes, sizeof(clientes), num_clientes, f);
-        fwrite(&num_produtos, sizeof(int), 1, f);
-        fwrite(produtos, sizeof(produtos), num_produtos, f);
-        fwrite(&num_pedidos, sizeof(int), 1, f);
-        fwrite(pedidos, sizeof(pedidos), num_pedidos, f);
-    }
-}
-
-void CarregarDados (void){
-    FILE *f = fopen("dados_da_loja.dat", "wb");
-    if (f) {
-        fwrite(&num_clientes, sizeof(int), 1, f);
-        fwrite(clientes, sizeof(clientes), num_clientes, f);
-        fwrite(&num_produtos, sizeof(int), 1, f);
-        fwrite(produtos, sizeof(produtos), num_produtos, f);
-        fwrite(&num_pedidos, sizeof(int), 1, f);
-        fwrite(pedidos, sizeof(pedidos), num_pedidos, f);
-    }
-}
-
 const char *forma_pagamento_str(FormaPagamento f) {
     switch (f) {
         case CARTAO_CREDITO: return "Cartao de Credito";
@@ -783,6 +759,31 @@ void menu_pedidos(void) {
     } while (op != 0);
 }
 
+void SalvarDados (void){
+    FILE *f = fopen("dados_da_loja.dat", "wb");
+    if (f) {
+        fwrite(&num_clientes, sizeof(int), 1, f);
+        fwrite(clientes, sizeof(clientes), num_clientes, f);
+        fwrite(&num_produtos, sizeof(int), 1, f);
+        fwrite(produtos, sizeof(produtos), num_produtos, f);
+        fwrite(&num_pedidos, sizeof(int), 1, f);
+        fwrite(pedidos, sizeof(pedidos), num_pedidos, f);
+    }
+}
+
+void CarregarDados (void){
+    FILE *f = fopen("dados_da_loja.dat", "rb");
+    if (f) {
+        fread(&num_clientes, sizeof(int), 1, f);
+        fread(clientes, sizeof(clientes), num_clientes, f);
+        fread(&num_produtos, sizeof(int), 1, f);
+        fread(produtos, sizeof(produtos), num_produtos, f);
+        fread(&num_pedidos, sizeof(int), 1, f);
+        fread(pedidos, sizeof(pedidos), num_pedidos, f);
+        fclose(f);
+    }
+}
+
 void menu_principal(void) {
     int op;
     do {
@@ -808,7 +809,7 @@ void menu_principal(void) {
             case 3: menu_pedidos();     break;
             case 4: relatorio_vendas(); pausar(); break;
             case 5: carregar_dados_exemplo(); pausar(); break;
-            case 0: printf("\n  Ate logo!\n\n"); break;
+            case 0: SalvarDados(); break;
             default: printf("  [!] Opcao invalida.\n"); pausar();
         }
     } while (op != 0);
@@ -816,6 +817,8 @@ void menu_principal(void) {
 
 int main(void) {
     srand((unsigned)time(NULL));
+    CarregarDados();
     menu_principal();
+
     return 0;
 }
